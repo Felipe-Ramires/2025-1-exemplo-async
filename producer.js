@@ -1,20 +1,20 @@
 const amqp = require("amqplib");
-async function produce(){
-    try{
+async function produce() {
+    try {    
         const connection = await amqp.connect("amqp://localhost");
-        const channel = await connection.createChanel();
+        const channel = await connection.createChannel();
         const queue = 'mensagens';
-        await channel.assertQueeu(queue, {durable: false});
+        await channel.assertQueue(queue, {durable: false});
 
         let messageCount = 1;
 
         setInterval(() =>{
-            const message = 'Messagem ${messageCount}';
-            channel.sendToQueue(queue, Buffer, from(message));
-            console.log(`Enviada: ${mensagem}`);
+            const message = `Messagem ${messageCount}`;
+            channel.sendToQueue(queue, Buffer.from(message));
+            console.log(`Enviada: ${message}`);
             messageCount++;
         }, 2000);
-    }catch(error){
+    }catch (error){
         console.error("Erro:", error);
     }
 }
